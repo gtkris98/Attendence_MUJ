@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Attendance IT4B</string>
+    <string name="title_activity_faculty">faculty</string>
+    <string name="action_settings">Settings</string>
+</resources>
