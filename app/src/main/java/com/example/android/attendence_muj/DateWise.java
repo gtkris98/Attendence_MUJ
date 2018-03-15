@@ -4,9 +4,8 @@ import java.util.Date;
 
 public class DateWise
 {
-    int id;
-    Date d;
-    Boolean attendence;
+    int id,date;
+    int attendence;
 
     public int getId() {
         return id;
@@ -16,19 +15,19 @@ public class DateWise
         this.id = id;
     }
 
-    public Date getD() {
-        return d;
+    public int getDate() {
+        return date;
     }
 
-    public void setD(Date d) {
-        this.d = d;
+    public void setDate(int date) {
+        this.date = date;
     }
 
-    public Boolean getAttendence() {
+    public int getAttendence() {
         return attendence;
     }
 
-    public void setAttendence(Boolean attendence) {
+    public void setAttendence(int attendence) {
         this.attendence = attendence;
     }
 }

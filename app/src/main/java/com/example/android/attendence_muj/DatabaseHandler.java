@@ -17,7 +17,8 @@ public class DatabaseHandler extends SQLiteOpenHelper
     public static String name="AttendenceITB";
     public static int Version=1;
 
-    public DatabaseHandler(Context context, int version) {
+    public DatabaseHandler(Context context, int version)
+    {
         super(context,name,null, version);
     }
 
@@ -29,7 +30,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
         query="Create table attendence (id integer primary key,total_class float, present float, absent float, percentage float )";
         sqLiteDatabase.execSQL(query);
         Log.d("SecondQuery","Worked");
-        query="Create table date (id integer primary key, day DATE, present int )";
+        query="Create table date (id integer, day integer, present integer )";
         sqLiteDatabase.execSQL(query);
         Log.d("ThirdQuery","Worked");
 
@@ -90,7 +91,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("id",dateWise.getId());
-        values.put("day",dateWise.getD().toString());
+        values.put("day",dateWise.getDate());
         values.put("present",dateWise.getAttendence());
         db.insert("date", null, values);
         db.close();
@@ -175,17 +176,30 @@ public class DatabaseHandler extends SQLiteOpenHelper
 
 
 
-    public List<Double> getAllPercentage()
+    public List<String> getDateWise(int reg_no)
     {
-        List<Double> percent=new ArrayList<>();
-        SQLiteDatabase db=this.getReadableDatabase();
-        Cursor cursor=db.rawQuery("select percentage from attendence",null);
-        if (cursor.moveToFirst()) {
+        List<String> datewiseAttendance = new ArrayList<>();
+        String attendance,dates,formatted_date;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select day, present FROM date where id = "+reg_no,null);
+        if (cursor.moveToFirst())
+        {
             do
             {
-                percent.add(cursor.getDouble(0));
-            } while (cursor.moveToNext());
+                dates = String.valueOf(cursor.getInt(cursor.getColumnIndex("day")));
+                Log.d("dates","  "+dates);
+                formatted_date = dates.substring(6) + "-" + dates.substring(4,6) + "-" + dates.substring(0,4);
+                if (cursor.getInt(cursor.getColumnIndex("present")) == 0)
+                {
+                    datewiseAttendance.add(formatted_date + "\t\t\t\t\t" + "Absent");
+                }
+                else
+                {
+                    datewiseAttendance.add(formatted_date + "\t\t\t\t\t" + "Present");
+                }
+
+            }while (cursor.moveToNext());
         }
-        return percent;
+        return datewiseAttendance;
     }
 }

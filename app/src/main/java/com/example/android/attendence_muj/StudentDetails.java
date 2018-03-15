@@ -32,13 +32,16 @@ public class StudentDetails extends AppCompatActivity implements AdapterView.OnI
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.student_details); //Set layout Student_details
+
         name_list=(ListView)findViewById(R.id.NameList);
         names.addAll(databaseHandler.getAllNamesAndPercentage());
         ArrayAdapter<String> list=new ArrayAdapter<String>(this,R.layout.support_simple_spinner_dropdown_item,names);
         name_list.setAdapter(list);
+
         et1=(EditText)findViewById(R.id.et_regid);
         et2=(EditText)findViewById(R.id.et_name);
         Button add=(Button)findViewById(R.id.add);
+
         name_list.setOnItemClickListener(this);
         add.setOnClickListener(new View.OnClickListener() {
             @Override

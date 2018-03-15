@@ -17,12 +17,13 @@ import java.util.List;
 
 public class TakeAttendence extends AppCompatActivity
 {
+    int date;
     String reg_no;
     String details_of_student;
     private DatabaseHandler databaseHandler=new DatabaseHandler(this,1);
     TextView tv1;//tv2;
     DatePicker dp;
-    Button b1,b2;
+    Button present,absent;
     List<String> names=new ArrayList<>();
     Iterator<String> iterator;
     @Override
@@ -34,8 +35,8 @@ public class TakeAttendence extends AppCompatActivity
         tv1=(TextView)findViewById(R.id.tv_regid);
         //tv2=(TextView)findViewById(R.id.tv_name);
         dp=(DatePicker)findViewById(R.id.date);
-        b1=(Button)findViewById(R.id.present);
-        b2=(Button)findViewById(R.id.absent);
+        present=(Button)findViewById(R.id.present);
+        absent=(Button)findViewById(R.id.absent);
         names.addAll(databaseHandler.getAllNamesAndPercentage());
         iterator=names.iterator();
         if (!iterator.hasNext())
@@ -50,12 +51,14 @@ public class TakeAttendence extends AppCompatActivity
             tv1.setText(details_of_student);
         }
 
-        b1.setOnClickListener(new View.OnClickListener() {
+        present.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
                 Log.d("Present","Clicked");
-
+                int date = dp.getYear()*10000;
+                date += dp.getMonth()*100;
+                date += dp.getDayOfMonth();
                 if(iterator.hasNext())
                 {
                     reg_no=details_of_student.substring(0,2);
@@ -63,14 +66,22 @@ public class TakeAttendence extends AppCompatActivity
                     databaseHandler.addPresent(reg_no);
                     details_of_student=iterator.next();
                     tv1.setText(details_of_student);
+                    DateWise dateWise = new DateWise();
+                    dateWise.setAttendence(1);
+                    dateWise.setDate(date);
+                    dateWise.setId(Integer.parseInt(reg_no.trim()));
+                    databaseHandler.addDateWise(dateWise);
                 }
                 else
                 {
-                    //details_of_student=iterator.next();
-                    //tv1.setText(details_of_student);
                     reg_no=details_of_student.substring(0,2);
                     Log.d("Value of Reg_no :"," "+reg_no);
                     databaseHandler.addPresent(reg_no);
+                    DateWise dateWise = new DateWise();
+                    dateWise.setAttendence(1);
+                    dateWise.setDate(date);
+                    dateWise.setId(Integer.parseInt(reg_no.trim()));
+                    databaseHandler.addDateWise(dateWise);
                     //above code to add present for last student
                     iterator=names.iterator();
                     tv1.setText(iterator.next());
@@ -83,10 +94,13 @@ public class TakeAttendence extends AppCompatActivity
                 }
             }
         });
-        b2.setOnClickListener(new View.OnClickListener() {
+        absent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
+                int date = dp.getYear()*10000;
+                date += dp.getMonth()*100;
+                date += dp.getDayOfMonth();
                 if(iterator.hasNext())
                 {
                     reg_no=details_of_student.substring(0,2);
@@ -94,6 +108,11 @@ public class TakeAttendence extends AppCompatActivity
                     databaseHandler.addAbsent(reg_no);
                     details_of_student=iterator.next();
                     tv1.setText(details_of_student);
+                    DateWise dateWise = new DateWise();
+                    dateWise.setAttendence(0);
+                    dateWise.setDate(date);
+                    dateWise.setId(Integer.parseInt(reg_no.trim()));
+                    databaseHandler.addDateWise(dateWise);
                 }
                 else
                 {
@@ -102,6 +121,11 @@ public class TakeAttendence extends AppCompatActivity
                     reg_no=details_of_student.substring(0,2);
                     Log.d("Value of Reg_no :"," "+reg_no);
                     databaseHandler.addAbsent(reg_no);
+                    DateWise dateWise = new DateWise();
+                    dateWise.setAttendence(0);
+                    dateWise.setDate(date);
+                    dateWise.setId(Integer.parseInt(reg_no.trim()));
+                    databaseHandler.addDateWise(dateWise);
                     //above code to add absent for last student
                     iterator=names.iterator();
                     tv1.setText(iterator.next());

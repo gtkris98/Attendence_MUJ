@@ -26,7 +26,8 @@ public class Welcome extends AppCompatActivity
         et2=(EditText)findViewById(R.id.password);
         Button login=(Button)findViewById(R.id.login_button);
 
-        login.setOnClickListener(new View.OnClickListener() {
+        login.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view)
             {
